@@ -32,15 +32,20 @@ window.addEventListener('load', function() {
                     // Configurar el enlace de descarga
                     downloadLink.href = vrImageDataUrl;
                     downloadLink.style.display = 'block';
+                    downloadLink.textContent = 'Abrir imagen en nueva pestaña';
+
+                    // Abrir la imagen en una nueva pestaña al hacer clic en el enlace
+                    downloadLink.addEventListener('click', function(event) {
+                        event.preventDefault();
+                        const newWindow = window.open();
+                        if (newWindow) {
+                            newWindow.document.write('<img src="' + vrImageDataUrl + '" style="width: 100%;">');
+                            newWindow.document.title = "Imagen VR";
+                        }
+                    });
                 };
             };
             reader.readAsDataURL(file);
         }
-    });
-
-    // Abrir la imagen en una nueva pestaña al hacer clic en el enlace
-    downloadLink.addEventListener('click', function(event) {
-        event.preventDefault();
-        window.open(downloadLink.href, '_blank');
     });
 });
