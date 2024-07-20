@@ -34,6 +34,11 @@ window.addEventListener('load', function() {
                     downloadLink.style.display = 'block';
                     downloadLink.textContent = 'Abrir imagen en nueva pestaña';
 
+                    // Limpiar cualquier evento de clic previo
+                    const newDownloadLink = downloadLink.cloneNode(true);
+                    downloadLink.parentNode.replaceChild(newDownloadLink, downloadLink);
+                    downloadLink = newDownloadLink;
+
                     // Abrir la imagen en una nueva pestaña al hacer clic en el enlace
                     downloadLink.addEventListener('click', function(event) {
                         event.preventDefault();
