@@ -1,6 +1,7 @@
 window.addEventListener('load', function() {
     const fileInput = document.getElementById('file-input');
     const vrCanvas = document.getElementById('vr-canvas');
+    const downloadLink = document.getElementById('download-link');
     const context = vrCanvas.getContext('2d');
 
     fileInput.addEventListener('change', function(event) {
@@ -24,9 +25,22 @@ window.addEventListener('load', function() {
 
                     // Mostrar el canvas
                     vrCanvas.style.display = 'block';
+
+                    // Crear la URL de la imagen generada
+                    const vrImageDataUrl = vrCanvas.toDataURL('image/png');
+                    
+                    // Configurar el enlace de descarga
+                    downloadLink.href = vrImageDataUrl;
+                    downloadLink.style.display = 'block';
                 };
             };
             reader.readAsDataURL(file);
         }
+    });
+
+    // Abrir la imagen en una nueva pestaña al hacer clic en el enlace
+    downloadLink.addEventListener('click', function(event) {
+        event.preventDefault();
+        window.open(downloadLink.href, '_blank');
     });
 });

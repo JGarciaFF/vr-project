@@ -18,3 +18,12 @@ body {
     display: none; /* Ocultar el canvas inicialmente */
     max-width: 100%;
 }
+
+#download-link {
+    margin-top: 20px;
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    background-color: #007bff;
+    border-radius: 5px;
+}
