@@ -1,7 +1,7 @@
 window.addEventListener('load', function() {
     const fileInput = document.getElementById('file-input');
     const vrCanvas = document.getElementById('vr-canvas');
-    const downloadLink = document.getElementById('download-link');
+    let downloadLink = document.getElementById('download-link');
     const context = vrCanvas.getContext('2d');
 
     fileInput.addEventListener('change', function(event) {
@@ -26,8 +26,8 @@ window.addEventListener('load', function() {
                     // Mostrar el canvas
                     vrCanvas.style.display = 'block';
 
-                    // Crear la URL de la imagen generada
-                    const vrImageDataUrl = vrCanvas.toDataURL('image/png');
+                    // Crear la URL de la imagen generada con un parámetro único para evitar caché
+                    const vrImageDataUrl = vrCanvas.toDataURL('image/png') + '?' + new Date().getTime();
                     
                     // Configurar el enlace de descarga
                     downloadLink.href = vrImageDataUrl;
