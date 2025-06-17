@@ -15,8 +15,20 @@ body {
 }
 
 #vr-canvas {
-    display: none; /* Ocultar el canvas inicialmente */
+    display: none;
     max-width: 100%;
+}
+
+#video-container {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+#video-container video {
+    max-width: 50%;
+    height: auto;
 }
 
 #download-link {

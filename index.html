@@ -8,8 +8,12 @@
 </head>
 <body>
     <div class="vr-container">
-        <input type="file" id="file-input" accept="image/*">
+        <input type="file" id="file-input" accept="image/*,video/*">
         <canvas id="vr-canvas"></canvas>
+        <div id="video-container" style="display:none;">
+            <video id="video-left" controls autoplay muted loop></video>
+            <video id="video-right" controls autoplay muted loop></video>
+        </div>
         <a id="download-link" href="#" target="_blank" style="display:none;">Abrir imagen en nueva pestaña</a>
     </div>
     <script src="script.js"></script>
