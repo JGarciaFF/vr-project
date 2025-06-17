@@ -12,6 +12,7 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    width: 100%;
 }
 
 #vr-canvas {
@@ -21,13 +22,14 @@ body {
 
 #video-container {
     display: none;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
     width: 100%;
 }
 
 #video-container video {
-    max-width: 50%;
+    width: 50%;
     height: auto;
 }
 

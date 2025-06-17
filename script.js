@@ -22,7 +22,6 @@ window.addEventListener('load', function() {
                     const imageWidth = img.width;
                     const imageHeight = img.height;
 
-                    // Configurar el canvas
                     vrCanvas.width = imageWidth * 2;
                     vrCanvas.height = imageHeight;
 
@@ -51,9 +50,23 @@ window.addEventListener('load', function() {
         } 
         else if (fileType.startsWith('video/')) {
             const videoURL = URL.createObjectURL(file);
-            
+
             videoLeft.src = videoURL;
             videoRight.src = videoURL;
+
+            // Sincronizamos los dos vídeos
+            videoLeft.onloadedmetadata = () => {
+                videoRight.currentTime = videoLeft.currentTime;
+                videoLeft.play();
+                videoRight.play();
+            };
+
+            // Asegurar sincronización en cada frame (simple)
+            videoLeft.ontimeupdate = () => {
+                if (Math.abs(videoLeft.currentTime - videoRight.currentTime) > 0.1) {
+                    videoRight.currentTime = videoLeft.currentTime;
+                }
+            };
 
             videoContainer.style.display = 'flex';
             vrCanvas.style.display = 'none';
