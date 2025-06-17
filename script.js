@@ -33,17 +33,9 @@ window.addEventListener('load', function() {
 
                     const vrImageDataUrl = vrCanvas.toDataURL('image/png');
                     downloadLink.href = vrImageDataUrl;
+                    downloadLink.download = "imagen-vr.png";
                     downloadLink.style.display = 'block';
-                    downloadLink.textContent = 'Abrir imagen en nueva pestaña';
-
-                    downloadLink.onclick = function(event) {
-                        event.preventDefault();
-                        const newWindow = window.open();
-                        if (newWindow) {
-                            newWindow.document.write('<img src="' + vrImageDataUrl + '" style="width: 100%;">');
-                            newWindow.document.title = "Imagen VR";
-                        }
-                    };
+                    downloadLink.textContent = 'Descargar imagen';
                 };
             };
             reader.readAsDataURL(file);
@@ -54,14 +46,12 @@ window.addEventListener('load', function() {
             videoLeft.src = videoURL;
             videoRight.src = videoURL;
 
-            // Sincronizamos los dos vídeos
             videoLeft.onloadedmetadata = () => {
                 videoRight.currentTime = videoLeft.currentTime;
                 videoLeft.play();
                 videoRight.play();
             };
 
-            // Asegurar sincronización en cada frame (simple)
             videoLeft.ontimeupdate = () => {
                 if (Math.abs(videoLeft.currentTime - videoRight.currentTime) > 0.1) {
                     videoRight.currentTime = videoLeft.currentTime;
@@ -70,7 +60,12 @@ window.addEventListener('load', function() {
 
             videoContainer.style.display = 'flex';
             vrCanvas.style.display = 'none';
-            downloadLink.style.display = 'none';
+
+            // Activar el botón de descarga para vídeo
+            downloadLink.href = videoURL;
+            downloadLink.download = file.name;
+            downloadLink.style.display = 'block';
+            downloadLink.textContent = 'Descargar vídeo';
         } 
         else {
             alert("Formato no soportado.");
