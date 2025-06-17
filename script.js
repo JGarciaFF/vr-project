@@ -1,22 +1,19 @@
 window.addEventListener('load', function() {
     const fileInput = document.getElementById('file-input');
     const vrCanvas = document.getElementById('vr-canvas');
-    const downloadLink = document.getElementById('download-link');
     const videoContainer = document.getElementById('video-container');
-    const videoPreview = document.getElementById('video-preview');
-    const snapshotButton = document.getElementById('snapshot-button');
+    const videoLeft = document.getElementById('video-left');
+    const videoRight = document.getElementById('video-right');
     const context = vrCanvas.getContext('2d');
 
-    function resizeFullscreen() {
-        const vh = window.innerHeight;
-        const vw = window.innerWidth;
-        document.body.style.height = vh + 'px';
-        document.body.style.width = vw + 'px';
+    function adjustViewport() {
+        document.body.style.height = `${window.innerHeight}px`;
+        document.body.style.width = `${window.innerWidth}px`;
     }
 
-    resizeFullscreen();
-    window.addEventListener('resize', resizeFullscreen);
-    window.addEventListener('orientationchange', resizeFullscreen);
+    adjustViewport();
+    window.addEventListener('resize', adjustViewport);
+    window.addEventListener('orientationchange', adjustViewport);
 
     fileInput.addEventListener('change', function(event) {
         const file = event.target.files[0];
@@ -41,12 +38,6 @@ window.addEventListener('load', function() {
 
                     vrCanvas.style.display = 'block';
                     videoContainer.style.display = 'none';
-
-                    const vrImageDataUrl = vrCanvas.toDataURL('image/png');
-                    downloadLink.href = vrImageDataUrl;
-                    downloadLink.download = "imagen-vr.png";
-                    downloadLink.style.display = 'block';
-                    downloadLink.textContent = 'Descargar imagen VR';
                 };
             };
             reader.readAsDataURL(file);
@@ -54,32 +45,26 @@ window.addEventListener('load', function() {
         else if (fileType.startsWith('video/')) {
             const videoURL = URL.createObjectURL(file);
 
-            videoPreview.src = videoURL;
+            videoLeft.src = videoURL;
+            videoRight.src = videoURL;
+
+            videoLeft.onloadedmetadata = () => {
+                videoRight.currentTime = videoLeft.currentTime;
+                videoLeft.play();
+                videoRight.play();
+            };
+
+            videoLeft.ontimeupdate = () => {
+                if (Math.abs(videoLeft.currentTime - videoRight.currentTime) > 0.1) {
+                    videoRight.currentTime = videoLeft.currentTime;
+                }
+            };
+
             videoContainer.style.display = 'flex';
             vrCanvas.style.display = 'none';
-            downloadLink.style.display = 'none';
         } 
         else {
             alert("Formato no soportado.");
         }
-    });
-
-    snapshotButton.addEventListener('click', function() {
-        const videoWidth = videoPreview.videoWidth;
-        const videoHeight = videoPreview.videoHeight;
-
-        vrCanvas.width = videoWidth * 2;
-        vrCanvas.height = videoHeight;
-
-        context.drawImage(videoPreview, 0, 0, videoWidth, videoHeight);
-        context.drawImage(videoPreview, videoWidth, 0, videoWidth, videoHeight);
-
-        vrCanvas.style.display = 'block';
-
-        const vrImageDataUrl = vrCanvas.toDataURL('image/png');
-        downloadLink.href = vrImageDataUrl;
-        downloadLink.download = "video-frame-vr.png";
-        downloadLink.style.display = 'block';
-        downloadLink.textContent = 'Descargar imagen VR';
     });
 });

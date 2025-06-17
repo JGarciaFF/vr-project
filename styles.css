@@ -1,14 +1,14 @@
 html, body {
     margin: 0;
     padding: 0;
-    background-color: black;
-    overflow: hidden;
     height: 100%;
     width: 100%;
+    background-color: black;
+    overflow: hidden;
 }
 
 .vr-container {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
@@ -27,29 +27,15 @@ html, body {
 
 #video-container {
     display: none;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
     width: 100%;
+    height: 100%;
 }
 
-#video-preview {
-    width: 100%;
-    height: auto;
-    object-fit: contain;
-}
-
-#snapshot-button {
-    margin-top: 20px;
-    padding: 10px 20px;
-    font-size: 16px;
-}
-
-#download-link {
-    margin-top: 20px;
-    color: white;
-    text-decoration: none;
-    padding: 10px 20px;
-    background-color: #007bff;
-    border-radius: 5px;
+#video-container video {
+    width: 50%;
+    height: 100%;
+    object-fit: cover;
 }
