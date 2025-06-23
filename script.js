@@ -32,10 +32,12 @@ window.addEventListener('load', function() {
                     videoContainer.style.display = 'none';
 
                     const vrImageDataUrl = vrCanvas.toDataURL('image/png');
+
                     downloadLink.href = vrImageDataUrl;
-                    downloadLink.download = "imagen-vr.png";
+                    downloadLink.target = "_blank";
+                    downloadLink.removeAttribute("download");
                     downloadLink.style.display = 'block';
-                    downloadLink.textContent = 'Descargar imagen';
+                    downloadLink.textContent = 'Abrir imagen';
                 };
             };
             reader.readAsDataURL(file);
@@ -61,7 +63,6 @@ window.addEventListener('load', function() {
             videoContainer.style.display = 'flex';
             vrCanvas.style.display = 'none';
 
-            // Activar el botón de descarga para vídeo
             downloadLink.href = videoURL;
             downloadLink.download = file.name;
             downloadLink.style.display = 'block';
