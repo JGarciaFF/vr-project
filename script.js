@@ -7,6 +7,9 @@ window.addEventListener('load', () => {
     const videoRight = document.getElementById('video-right');
     const ctx = vrCanvas.getContext('2d');
 
+    // Detección de iPhone/iPad (Safari)
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
     fileInput.addEventListener('change', event => {
         const file = event.target.files[0];
         if (!file) return;
@@ -31,15 +34,23 @@ window.addEventListener('load', () => {
                     vrCanvas.style.display = 'block';
                     videoContainer.style.display = 'none';
                     downloadBtn.style.display = 'block';
+                    downloadBtn.textContent = isIOS ? 'Abrir imagen' : 'Descargar imagen';
 
                     downloadBtn.onclick = () => {
                         const vrImageDataUrl = vrCanvas.toDataURL('image/png');
-                        const a = document.createElement('a');
-                        a.href = vrImageDataUrl;
-                        a.download = 'vr_image.png';
-                        document.body.appendChild(a);
-                        a.click();
-                        document.body.removeChild(a);
+                        if (isIOS) {
+                            // En iPhone: abrir nueva pestaña para poder mantener pulsado y guardar
+                            const newTab = window.open();
+                            newTab.document.write(`<img src="${vrImageDataUrl}" style="width:100%;height:auto;">`);
+                        } else {
+                            // En escritorio: descarga directa
+                            const a = document.createElement('a');
+                            a.href = vrImageDataUrl;
+                            a.download = 'vr_image.png';
+                            document.body.appendChild(a);
+                            a.click();
+                            document.body.removeChild(a);
+                        }
                     };
                 };
             };
