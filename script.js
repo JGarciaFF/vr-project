@@ -7,7 +7,7 @@ window.addEventListener('load', () => {
     const videoRight = document.getElementById('video-right');
     const ctx = vrCanvas.getContext('2d');
 
-    // Detección de iPhone/iPad (Safari)
+    // Detecta si es iPhone o iPad (Safari)
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 
     fileInput.addEventListener('change', event => {
@@ -38,12 +38,15 @@ window.addEventListener('load', () => {
 
                     downloadBtn.onclick = () => {
                         const vrImageDataUrl = vrCanvas.toDataURL('image/png');
+
                         if (isIOS) {
-                            // En iPhone: abrir nueva pestaña para poder mantener pulsado y guardar
-                            const newTab = window.open();
-                            newTab.document.write(`<img src="${vrImageDataUrl}" style="width:100%;height:auto;">`);
+                            // Abre la imagen directamente en nueva pestaña
+                            const newTab = window.open(vrImageDataUrl, '_blank');
+                            if (!newTab) {
+                                alert("Desbloquea las ventanas emergentes para poder abrir la imagen.");
+                            }
                         } else {
-                            // En escritorio: descarga directa
+                            // Descarga directa en escritorio
                             const a = document.createElement('a');
                             a.href = vrImageDataUrl;
                             a.download = 'vr_image.png';
