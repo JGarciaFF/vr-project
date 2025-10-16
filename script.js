@@ -1,13 +1,13 @@
-window.addEventListener('load', function() {
+window.addEventListener('load', () => {
     const fileInput = document.getElementById('file-input');
     const vrCanvas = document.getElementById('vr-canvas');
-    const downloadLink = document.getElementById('download-link');
+    const downloadBtn = document.getElementById('download-btn');
     const videoContainer = document.getElementById('video-container');
     const videoLeft = document.getElementById('video-left');
     const videoRight = document.getElementById('video-right');
-    const context = vrCanvas.getContext('2d');
+    const ctx = vrCanvas.getContext('2d');
 
-    fileInput.addEventListener('change', function(event) {
+    fileInput.addEventListener('change', event => {
         const file = event.target.files[0];
         if (!file) return;
 
@@ -15,29 +15,32 @@ window.addEventListener('load', function() {
 
         if (fileType.startsWith('image/')) {
             const reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = e => {
                 const img = new Image();
                 img.src = e.target.result;
-                img.onload = function() {
-                    const imageWidth = img.width;
-                    const imageHeight = img.height;
+                img.onload = () => {
+                    const w = img.width;
+                    const h = img.height;
 
-                    vrCanvas.width = imageWidth * 2;
-                    vrCanvas.height = imageHeight;
+                    vrCanvas.width = w * 2;
+                    vrCanvas.height = h;
 
-                    context.drawImage(img, 0, 0, imageWidth, imageHeight);
-                    context.drawImage(img, imageWidth, 0, imageWidth, imageHeight);
+                    ctx.drawImage(img, 0, 0, w, h);
+                    ctx.drawImage(img, w, 0, w, h);
 
                     vrCanvas.style.display = 'block';
                     videoContainer.style.display = 'none';
+                    downloadBtn.style.display = 'block';
 
-                    const vrImageDataUrl = vrCanvas.toDataURL('image/png');
-
-                    downloadLink.href = vrImageDataUrl;
-                    downloadLink.target = "_blank";
-                    downloadLink.removeAttribute("download");
-                    downloadLink.style.display = 'block';
-                    downloadLink.textContent = 'Abrir imagen';
+                    downloadBtn.onclick = () => {
+                        const vrImageDataUrl = vrCanvas.toDataURL('image/png');
+                        const a = document.createElement('a');
+                        a.href = vrImageDataUrl;
+                        a.download = 'vr_image.png';
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                    };
                 };
             };
             reader.readAsDataURL(file);
@@ -62,11 +65,17 @@ window.addEventListener('load', function() {
 
             videoContainer.style.display = 'flex';
             vrCanvas.style.display = 'none';
+            downloadBtn.style.display = 'block';
+            downloadBtn.textContent = 'Descargar vídeo';
 
-            downloadLink.href = videoURL;
-            downloadLink.download = file.name;
-            downloadLink.style.display = 'block';
-            downloadLink.textContent = 'Descargar vídeo';
+            downloadBtn.onclick = () => {
+                const a = document.createElement('a');
+                a.href = videoURL;
+                a.download = file.name;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            };
         } 
         else {
             alert("Formato no soportado.");

@@ -1,23 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
 body {
+    margin: 0;
+    padding: 0;
+    background: radial-gradient(circle at center, #0a0a0a 0%, #000 100%);
+    color: #fff;
+    font-family: 'Inter', sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    margin: 0;
-    background-color: #000;
 }
 
 .vr-container {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    width: 100%;
+    gap: 20px;
+    text-align: center;
+    width: 90%;
+    max-width: 700px;
+}
+
+h1 {
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: #0af;
+}
+
+#file-input {
+    background: #111;
+    color: #0af;
+    border: 1px solid #0af;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
 #vr-canvas {
     display: none;
-    max-width: 100%;
+    width: 100%;
+    border: 2px solid #0af;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 170, 255, 0.3);
 }
 
 #video-container {
@@ -26,18 +51,27 @@ body {
     justify-content: center;
     align-items: center;
     width: 100%;
+    gap: 10px;
 }
 
 #video-container video {
     width: 50%;
-    height: auto;
+    border-radius: 10px;
+    border: 2px solid #0af;
 }
 
-#download-link {
-    margin-top: 20px;
-    color: white;
-    text-decoration: none;
-    padding: 10px 20px;
-    background-color: #007bff;
-    border-radius: 5px;
+#download-btn {
+    background: #0af;
+    border: none;
+    color: #fff;
+    font-weight: 600;
+    padding: 12px 25px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+#download-btn:hover {
+    background: #08f;
+    transform: translateY(-2px);
 }
