@@ -7,7 +7,6 @@ window.addEventListener('load', () => {
     const videoRight = document.getElementById('video-right');
     const ctx = vrCanvas.getContext('2d');
 
-    // Detecta si es iPhone o iPad (Safari)
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 
     fileInput.addEventListener('change', event => {
@@ -37,29 +36,40 @@ window.addEventListener('load', () => {
                     downloadBtn.textContent = isIOS ? 'Abrir imagen' : 'Descargar imagen';
 
                     downloadBtn.onclick = () => {
-                        const vrImageDataUrl = vrCanvas.toDataURL('image/png');
+                        vrCanvas.toBlob(blob => {
+                            const vrImageUrl = URL.createObjectURL(blob);
 
-                        if (isIOS) {
-                            // Abre la imagen directamente en nueva pestaña
-                            const newTab = window.open(vrImageDataUrl, '_blank');
-                            if (!newTab) {
-                                alert("Desbloquea las ventanas emergentes para poder abrir la imagen.");
+                            if (isIOS) {
+                                // Abre imagen en nueva pestaña, compatible con Safari
+                                const newWindow = window.open();
+                                if (newWindow) {
+                                    const imgHtml = `
+                                        <html>
+                                            <head><title>Imagen VR</title></head>
+                                            <body style="margin:0;background:#000;display:flex;justify-content:center;align-items:center;">
+                                                <img src="${vrImageUrl}" style="width:100%;height:auto;"/>
+                                            </body>
+                                        </html>`;
+                                    newWindow.document.write(imgHtml);
+                                    newWindow.document.close();
+                                } else {
+                                    alert("Desbloquea las ventanas emergentes para poder abrir la imagen.");
+                                }
+                            } else {
+                                const a = document.createElement('a');
+                                a.href = vrImageUrl;
+                                a.download = 'vr_image.png';
+                                document.body.appendChild(a);
+                                a.click();
+                                document.body.removeChild(a);
+                                URL.revokeObjectURL(vrImageUrl);
                             }
-                        } else {
-                            // Descarga directa en escritorio
-                            const a = document.createElement('a');
-                            a.href = vrImageDataUrl;
-                            a.download = 'vr_image.png';
-                            document.body.appendChild(a);
-                            a.click();
-                            document.body.removeChild(a);
-                        }
+                        }, 'image/png');
                     };
                 };
             };
             reader.readAsDataURL(file);
-        } 
-        else if (fileType.startsWith('video/')) {
+        } else if (fileType.startsWith('video/')) {
             const videoURL = URL.createObjectURL(file);
 
             videoLeft.src = videoURL;
@@ -90,8 +100,7 @@ window.addEventListener('load', () => {
                 a.click();
                 document.body.removeChild(a);
             };
-        } 
-        else {
+        } else {
             alert("Formato no soportado.");
         }
     });
