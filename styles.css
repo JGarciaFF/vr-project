@@ -45,21 +45,6 @@ h1 {
     box-shadow: 0 0 20px rgba(0, 170, 255, 0.3);
 }
 
-#video-container {
-    display: none;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    gap: 10px;
-}
-
-#video-container video {
-    width: 50%;
-    border-radius: 10px;
-    border: 2px solid #0af;
-}
-
 #download-btn {
     background: #0af;
     border: none;

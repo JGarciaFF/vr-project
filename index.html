@@ -3,21 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vista VR</title>
+    <title>Visor VR</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="vr-container">
         <h1>Visor VR</h1>
-        <input type="file" id="file-input" accept="image/*,video/*">
+        <input type="file" id="file-input" accept="image/*">
         <canvas id="vr-canvas"></canvas>
-
-        <div id="video-container">
-            <video id="video-left" autoplay muted loop playsinline></video>
-            <video id="video-right" autoplay muted loop playsinline></video>
-        </div>
-
-        <button id="download-btn" style="display:none;">Descargar imagen</button>
+        <button id="download-btn" style="display:none;">Abrir imagen</button>
     </div>
 
     <script src="script.js"></script>
