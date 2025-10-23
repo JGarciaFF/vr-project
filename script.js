@@ -25,27 +25,19 @@ window.addEventListener('load', () => {
 
                 vrCanvas.style.display = 'block';
                 downloadBtn.style.display = 'block';
-                downloadBtn.textContent = isIOS ? 'Abrir imagen' : 'Descargar imagen';
+                downloadBtn.textContent = 'Ver imagen en pantalla completa';
 
                 downloadBtn.onclick = () => {
                     vrCanvas.toBlob(blob => {
                         const vrImageUrl = URL.createObjectURL(blob);
 
                         if (isIOS) {
-                            const newWindow = window.open();
-                            if (newWindow) {
-                                newWindow.document.write(`
-                                    <html>
-                                        <head><title>Imagen VR</title></head>
-                                        <body style="margin:0;background:#000;display:flex;justify-content:center;align-items:center;">
-                                            <img src="${vrImageUrl}" style="width:100%;height:auto;"/>
-                                        </body>
-                                    </html>
-                                `);
-                                newWindow.document.close();
-                            } else {
-                                alert("Desbloquea las ventanas emergentes para poder abrir la imagen.");
-                            }
+                            // Reemplazamos el contenido de la página con la imagen
+                            document.body.innerHTML = `
+                                <div style="background:black;display:flex;justify-content:center;align-items:center;height:100vh;">
+                                    <img src="${vrImageUrl}" style="width:100%;height:auto;"/>
+                                </div>
+                            `;
                         } else {
                             const a = document.createElement('a');
                             a.href = vrImageUrl;
