@@ -38,19 +38,19 @@ window.addEventListener('load', () => {
                     ctx.fillStyle = 'black';
                     ctx.fillRect(0, 0, vrCanvas.width, vrCanvas.height);
 
-                    // Escala (ajustable)
                     const scale = 0.8;
-                    const newW = w * scale;
-                    const newH = h * scale;
 
-                    const offsetX = (w - newW) / 2;
-                    const offsetY = (h - newH) / 2;
+                    // Dimensiones del bloque completo (dos imágenes)
+                    const totalW = w * 2 * scale;
+                    const totalH = h * scale;
 
-                    // Imagen izquierda
-                    ctx.drawImage(img, offsetX, offsetY, newW, newH);
+                    // Centramos el bloque entero
+                    const startX = (vrCanvas.width - totalW) / 2;
+                    const startY = (vrCanvas.height - totalH) / 2;
 
-                    // Imagen derecha
-                    ctx.drawImage(img, w + offsetX, offsetY, newW, newH);
+                    // Dibujar imágenes pegadas
+                    ctx.drawImage(img, startX, startY, w * scale, h * scale);
+                    ctx.drawImage(img, startX + w * scale, startY, w * scale, h * scale);
                 }
 
                 vrCanvas.style.display = 'block';
