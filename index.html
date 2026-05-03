@@ -9,9 +9,19 @@
 <body>
     <div class="vr-container">
         <h1>Visor VR</h1>
+
         <input type="file" id="file-input" accept="image/*">
+
+        <label style="display:flex;align-items:center;gap:8px;">
+            <input type="checkbox" id="padding-toggle">
+            Añadir márgenes negros (zoom out)
+        </label>
+
         <canvas id="vr-canvas"></canvas>
-        <button id="download-btn" style="display:none;">Abrir imagen</button>
+
+        <button id="download-btn" style="display:none;">
+            Abrir imagen
+        </button>
     </div>
 
     <script src="script.js"></script>
